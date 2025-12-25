@@ -49,13 +49,33 @@ router.put('/update/:id', (req, res) => {
     if (index === -1) {
       return res
         .status(404)
-        .json({ error: 'User not found' });
+        .json({ error: `Product with id ${id} not found` });
     }
     
     products[index] = { id, ...req.body };
     res.json(products[index]);
   });
 
-  
+//delete product
+  router.delete('/delete/:id', (req, res) => {
+    const id = parseInt(req.params.id);
+    const productIndex = products.findIndex(d => d.id === id);
+    
+    if (productIndex === -1) {
+      return res
+        .status(404)
+        .json({ error: `Product with id ${id} not found`});
+    }
+    
+    //delete product
+    const deleteProduct = products.splice(productIndex, 1)[0];
+
+    res.json({
+        msg: 'Product updated successfully',
+        deleteProduct
+    });
+  });
+
+
 
 module.exports = router;
